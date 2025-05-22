@@ -10,7 +10,7 @@ const API_BASE_URL = "https://jsonplaceholder.typicode.com/";
 const MAX_WORDS = 500;
 const MIN_WORDS = 15;
 const sampleText =
-    "Put what you want changed in this section. Then, click the paraphrase button below. It's that easy!";
+    "Put what you want changed in this section. Then, click the summarize button below. It's that easy!";
 
 (() => {
     $(document).ready(() => {
@@ -139,12 +139,14 @@ const sampleText =
         $(".js-result-show").addClass("hidden");
         $(".js-loader").addClass("flex").removeClass("hidden");
         $(".js-output-bottom").addClass("hidden").removeClass("flex");
+
+        const payload = {
+            text: inputText,
+        };
         try {
             const response = await axios.post(
                 `${API_BASE_URL}/posts`,
-                {
-                    text: inputText,
-                },
+                payload,
                 {
                     headers: {
                         "content-type": "application/json",
@@ -170,6 +172,7 @@ const sampleText =
                 $("#js-copy-result-text").attr("data-copy", resultText);
             }
         } catch (error) {
+            console.error("error occured while summarizing text: ", error);
         } finally {
             $(".js-loader").removeClass("flex").addClass("hidden");
         }

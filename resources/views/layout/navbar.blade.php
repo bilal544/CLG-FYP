@@ -1,5 +1,5 @@
 <header>
-  <nav class="max-w-7xl py-4 px-3">
+  <nav class="max-w-7xl py-4 px-3 mx-auto">
     <div class="container flex items-center justify-between w-full max-w-full">
       <a href="{{route('index')}}">
         <h2 class="text-black text-3xl/6 font-semibold">Smart Write</h2>

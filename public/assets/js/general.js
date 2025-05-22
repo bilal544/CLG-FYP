@@ -49,7 +49,7 @@ const handleWordCounter = (text = "") => {
 
 const popup = (
     title = "No Text Found!",
-    text = " At least Enter 15 words to summarize text."
+    text = "Enter At least 15 words to summarize text."
 ) => {
     $(".js-popup").empty();
     const $html = `

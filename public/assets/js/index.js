@@ -58,9 +58,27 @@ const sampleText =
                     .removeClass("text-gray-600");
                 return;
             }
+            $(".js-entered-words")
+                .text(words)
+                .removeClass("text-red-600 text-gray-600")
+                .addClass("text-gray-600");
+            if (words > MAX_WORDS) {
+                popup(
+                    "Text Too Long!",
+                    "Only 500 words are accepted to summarize."
+                );
+                $(".js-entered-words")
+                    .addClass("text-red-600")
+                    .removeClass("text-gray-600");
+                return;
+            }
         } else {
             $("#js-btn-group").removeClass("hidden").addClass("flex");
             $("#js-delete-text").removeClass("block").addClass("hidden");
+            $(".js-entered-words")
+                .text(0)
+                .removeClass("text-red-600 text-gray-600")
+                .addClass("text-gray-600");
             $(".js-entered-words")
                 .text(0)
                 .removeClass("text-red-600 text-gray-600")
@@ -140,7 +158,7 @@ const sampleText =
                 const outputWords = handleWordCounter(resultText.trim());
                 $(".js-output-bottom").removeClass("hidden").addClass("flex");
                 $("#js-result-text").val(resultText);
-                $(".js-output-words").text(outputWords);
+                $(".js-output-words").text(`${outputWords} Words`);
                 $(".js-result-show").removeClass("hidden");
                 $(".js-text-summarize")
                     .text(btnText)

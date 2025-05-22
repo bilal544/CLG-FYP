@@ -82,7 +82,7 @@
                 </div>
                 <div
                     class="js-output-bottom mt-auto mb-3 px-4 pt-2 hidden items-center justify-between border-t border-gray-200">
-                    <div class="word-counter flex items-center" data-tooltip="Words">
+                    <div class="word-counter flex items-center">
                         <span class="text-gray-600 text-sm/normal font-normal js-output-words">0</span>
                     </div>
                     <div class="flex items-center justify-end gap-2 flex-1">

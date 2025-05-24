@@ -4,9 +4,9 @@
 
 @section('section')
 <main class="max-w-6xl py-7 px-4 mx-auto">
-    <div class="container">
+    <div class="container mx-auto">
         <div
-            class="tool flex flex-wrap justify-between min-h-[450px] bg-white custom-shadow w-full rounded-md border border-gray-300">
+            class="tool flex lg:flex-row flex-col justify-between min-h-[450px] bg-white custom-shadow w-full rounded-md border border-gray-300">
             {{-- input-box-start --}}
             <div class="input-box w-full border-r flex flex-col border-gray-300 flex-1 min-h-[450px] relative">
                 <div class="px-4 py-5 w-full flex-grow">
@@ -17,8 +17,8 @@
                 </div>
                 {{-- btn group + upload file btn start --}}
                 <div id="js-btn-group"
-                    class="flex flex-col items-center justify-center gap-2 absolute transform top-[50%] -translate-y-[50%] left-[45%] -translate-x-[45%] z-20">
-                    <input type="file" id="file" accept=".txt, .pdf, .docx, .doc" hidden>
+                    class="flex w-full flex-col items-center justify-center gap-2 absolute transform top-[50%] -translate-y-[50%] left-[45%] -translate-x-[45%] z-20">
+                    <input type="file" id="file" accept=".txt, .pdf, .docx" hidden>
                     {{-- upload file start --}}
                     <label for="file"
                         class="flex items-center leading-0 gap-1.5 bg-transparent border border-gray-300 hover:bg-gray-100 transition-all ease-in duration-150 rounded-full py-1 px-4 cursor-pointer group">
@@ -46,7 +46,8 @@
                     </div>
                 </div>
                 {{-- btn group + upload file btn end --}}
-                <div class="bottom mt-auto mb-3 px-4 pt-2 flex items-center justify-between border-t border-gray-200">
+                <div
+                    class="bottom mt-auto lg:mb-3 mb-0 px-4 lg:pt-2 lg:py-0 py-2 flex items-center justify-between border-t lg:border-b-0 border-b border-gray-200">
                     <div class="flex items-center gap-4 flex-1">
                         <div class="word-counter flex items-center" data-tooltip="Words">
                             <span class="text-gray-600 text-sm/normal font-normal js-entered-words">0</span>
@@ -71,7 +72,7 @@
             {{-- input-box-end --}}
 
             {{-- output box start --}}
-            <div class="output-box h-full flex-1">
+            <div class="output-box h-full flex-1 lg:block hidden">
                 <div class="hidden js-loader flex-col gap-2 items-center justify-center min-h-[435px]">
                     <span class="text-gray-600 text-base/6 font-medium">Please wait...</span>
                     <div class="loader"></div>

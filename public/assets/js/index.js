@@ -9,7 +9,7 @@ import {
     handleExtractTextFromDocx,
 } from "./general.js";
 
-const API_BASE_URL = "https://jsonplaceholder.typicode.com/";
+const API_BASE_URL = `${BASE_URL}/paraphrase`;
 const MAX_WORDS = 500;
 const MIN_WORDS = 15;
 const sampleText =
@@ -221,17 +221,14 @@ const valideFiles = ["txt", "pdf", "docx"];
         };
 
         try {
-            const response = await axios.post(
-                `${API_BASE_URL}/posts`,
-                payload,
-                {
-                    headers: {
-                        "content-type": "application/json",
-                    },
-                }
-            );
+            const response = await axios.post(`${API_BASE_URL}`, payload, {
+                headers: {
+                    "content-type": "application/json",
+                    "X-CSRF-TOKEN": $('meta[name="_token"]').attr("content"),
+                },
+            });
 
-            if (response?.data) {
+            if (response?.data?.success === true) {
                 $(".js-loader").removeClass("flex").addClass("hidden");
                 const resultText = response?.data?.text || "No result found.";
                 const outputWords = handleWordCounter(resultText.trim());

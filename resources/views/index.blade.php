@@ -8,12 +8,12 @@
         <div
             class="tool flex lg:flex-row flex-col justify-between min-h-[450px] bg-white custom-shadow w-full rounded-md border border-gray-300">
             {{-- input-box-start --}}
-            <div class="input-box w-full border-r flex flex-col border-gray-300 flex-1 min-h-[450px] relative">
+            <div class="input-box w-full border-r flex flex-col border-gray-300 flex-1 min-h-[400px] relative">
                 <div class="px-4 py-5 w-full flex-grow">
                     <textarea name="input-text" id="js-input-text"
                         placeholder="To, rewrite text, enter or paste it here and press text summarize."
                         spellcheck="false"
-                        class="min-h-[380px] w-full resize-none border-0 ring-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0"></textarea>
+                        class="min-h-[350px] w-full resize-none border-0 ring-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0"></textarea>
                 </div>
                 {{-- btn group + upload file btn start --}}
                 <div id="js-btn-group"
@@ -73,14 +73,14 @@
 
             {{-- output box start --}}
             <div class="output-box h-full flex-1 lg:block hidden">
-                <div class="hidden js-loader flex-col gap-2 items-center justify-center min-h-[435px]">
+                <div class="hidden js-loader flex-col gap-2 items-center justify-center min-h-[385px]">
                     <span class="text-gray-600 text-base/6 font-medium">Please wait...</span>
                     <div class="loader"></div>
                 </div>
                 <div class="px-4 py-5 w-full flex-grow js-result-show">
                     <textarea name="result-text" id="js-result-text" placeholder="Result will be display here..."
                         spellcheck="false" readonly
-                        class="min-h-[380px] w-full resize-none border-0 ring-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0"></textarea>
+                        class="min-h-[350px] w-full resize-none border-0 ring-0 outline-0 focus:outline-0 focus:border-0 focus:ring-0"></textarea>
                 </div>
                 <div
                     class="js-output-bottom mt-auto mb-3 px-4 pt-2 hidden items-center justify-between border-t border-gray-200">

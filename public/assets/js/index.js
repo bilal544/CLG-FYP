@@ -3,7 +3,10 @@ import {
     handleDownloadResult,
     handleWordCounter,
     loadScript,
+    handleFileExtension,
     popup,
+    handleExtractTextFromPdf,
+    handleExtractTextFromDocx,
 } from "./general.js";
 
 const API_BASE_URL = "https://jsonplaceholder.typicode.com/";
@@ -11,9 +14,12 @@ const MAX_WORDS = 500;
 const MIN_WORDS = 15;
 const sampleText =
     "Put what you want changed in this section. Then, click the summarize button below. It's that easy!";
-
+const valideFiles = ["txt", "pdf", "docx"];
 (() => {
     $(document).ready(() => {
+        const $dropZone = $(".tool");
+        const $fileInput = $("#file");
+        $($fileInput).on("change", handleFile);
         $("#js-input-text").on(
             "change, input, keyup, keydown",
             handleInputTextArea
@@ -34,7 +40,71 @@ const sampleText =
             "#js-download-result-text",
             handleDownloadResult
         );
+
+        $dropZone.on("dragover", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $dropZone.addClass("bg-gray-50").removeClass("bg-white");
+        });
+
+        $dropZone.on("dragleave", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $dropZone.removeClass("bg-gray-50").addClass("bg-white");
+        });
+
+        $dropZone.on("drop", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $dropZone.removeClass("bg-gray-50").addClass("bg-white");
+
+            const files = e.originalEvent.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile({ target: { files } });
+            }
+        });
     });
+
+    // handle file to pick files user inputs
+    const handleFile = async (e) => {
+        const file = e.target.files[0];
+        const fileExt = handleFileExtension(file?.name);
+
+        if (!valideFiles.includes(fileExt)) {
+            popup("Wrong File", "Only .pdf, .txt or .docx files are accepted.");
+            e.target.value = "";
+            return;
+        }
+
+        if (fileExt === "txt") {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const text = event.target.result;
+                $("#js-input-text").val(text);
+                handleInputTextArea({ target: $("#js-input-text")[0] });
+            };
+            reader.readAsText(file);
+        }
+
+        if (fileExt === "pdf") {
+            try {
+                const result = await handleExtractTextFromPdf(file);
+                $("#js-input-text").val(result);
+                handleInputTextArea({ target: $("#js-input-text")[0] });
+            } catch (error) {
+                console.error("Error extracting text from PDF:", error);
+            }
+        }
+
+        if (fileExt === "docx") {
+            handleExtractTextFromDocx(file).then((result) => {
+                $("#js-input-text").val(result);
+                handleInputTextArea({ target: $("#js-input-text")[0] });
+            });
+        }
+
+        e.target.value = "";
+    };
 
     // handle input when user type text in textarea
     const handleInputTextArea = (e) => {
@@ -132,6 +202,12 @@ const sampleText =
 
         // load axios script
         await loadScript("jsAxios");
+        if ($(window).width() < 1024) {
+            $(".output-box").removeClass("hidden").addClass("block");
+            $(".output-box")[0].scrollIntoView({
+                behavior: "smooth",
+            });
+        }
         $(".js-text-summarize")
             .text("Summarizing...")
             .addClass("pointer-events-none bg-[#131313]/50")
@@ -143,6 +219,7 @@ const sampleText =
         const payload = {
             text: inputText,
         };
+
         try {
             const response = await axios.post(
                 `${API_BASE_URL}/posts`,
@@ -154,7 +231,7 @@ const sampleText =
                 }
             );
 
-            if (response) {
+            if (response?.data) {
                 $(".js-loader").removeClass("flex").addClass("hidden");
                 const resultText = response?.data?.text || "No result found.";
                 const outputWords = handleWordCounter(resultText.trim());
@@ -180,6 +257,12 @@ const sampleText =
 
     // handle clear all
     const handleClearAll = () => {
+        if ($(window).width() < 1024) {
+            $(".output-box").removeClass("block").addClass("hidden");
+        }
+        $(".tool")[0].scrollIntoView({
+            behavior: "smooth",
+        });
         $(".js-output-bottom").addClass("hidden").removeClass("flex");
         $("#js-result-text").val("");
         handleDeleteText();

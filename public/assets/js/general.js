@@ -1,8 +1,8 @@
 const imageNotFound = `${BASE_URL}/assets/images/not-found.jpg?v=${version}`;
+
 const scriptsLinks = {
-    jsPdf: "",
-    jsZip: "",
-    jsDocx: "",
+    jsPdf: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js",
+    jsDocx: "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js",
     jsAxios: "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
 };
 
@@ -113,10 +113,104 @@ const handleDownloadResult = (e) => {
     }
 };
 
+// get file extension
+const handleFileExtension = (fileName = "testing.txt") => {
+    const fileExt = fileName?.split(".")?.pop()?.toLowerCase();
+    if (fileExt) {
+        return fileExt;
+    } else {
+        console.log("file name not found.");
+    }
+};
+
+// extract text from pdf file
+const handleExtractTextFromPdf = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = async (event) => {
+            try {
+                await loadScript("jsPdf");
+                const typedArray = new Uint8Array(event.target.result);
+                const loadingTask = pdfjsLib.getDocument({ data: typedArray });
+
+                const pdf = await loadingTask.promise;
+                let fullText = "";
+
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const content = await page.getTextContent();
+
+                    const lines = {};
+                    content.items.forEach((item) => {
+                        const y = item.transform[5];
+                        if (!lines[y]) lines[y] = [];
+                        lines[y].push(item.str);
+                    });
+
+                    const sortedY = Object.keys(lines)
+                        .map(Number)
+                        .sort((a, b) => b - a);
+
+                    sortedY.forEach((y) => {
+                        fullText += lines[y].join(" ") + "\n";
+                    });
+
+                    fullText += "\n";
+                }
+
+                const words = fullText?.split(/\s+/).filter(Boolean);
+                const result = words.slice(0, 500).join(" ");
+                resolve(result);
+            } catch (err) {
+                console.error("Error reading PDF:", err);
+                reject(err);
+            }
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+};
+
+// extract text from .docx file
+const handleExtractTextFromDocx = async (file) => {
+    await loadScript("jsDocx"); // make sure this loads mammoth.js
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const arrayBuffer = e.target.result;
+
+            mammoth
+                .extractRawText({ arrayBuffer })
+                .then((result) => {
+                    const fullText = result.value;
+                    const first500Words = fullText
+                        .split(/\s+/)
+                        .filter(Boolean)
+                        .slice(0, 500)
+                        .join(" ");
+
+                    resolve(first500Words); // you can return fullText if needed
+                })
+                .catch((err) => {
+                    console.error("Error reading DOCX:", err);
+                    reject(err);
+                });
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
+};
+
 export {
     handleWordCounter,
     loadScript,
     popup,
     handleCopyResult,
     handleDownloadResult,
+    handleFileExtension,
+    handleExtractTextFromPdf,
+    handleExtractTextFromDocx,
 };

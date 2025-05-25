@@ -11,6 +11,11 @@ const scriptsLinks = {
         $(document).on("click", ".js-remove-popup", () => {
             $(".js-popup").empty().removeClass("flex").addClass("hidden");
         });
+        $(document).on("keydown", (e) => {
+            if (e.key === "Escape") {
+                $(".js-popup").empty().removeClass("flex").addClass("hidden");
+            }
+        });
     });
 })();
 
@@ -174,8 +179,7 @@ const handleExtractTextFromPdf = (file) => {
 
 // extract text from .docx file
 const handleExtractTextFromDocx = async (file) => {
-    await loadScript("jsDocx"); // make sure this loads mammoth.js
-
+    await loadScript("jsDocx"); 
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
@@ -192,7 +196,7 @@ const handleExtractTextFromDocx = async (file) => {
                         .slice(0, 500)
                         .join(" ");
 
-                    resolve(first500Words); // you can return fullText if needed
+                    resolve(first500Words); 
                 })
                 .catch((err) => {
                     console.error("Error reading DOCX:", err);

@@ -27,7 +27,7 @@ class AjaxController extends Controller
                 'messages' => [
                     [
                         'role' => 'user',
-                        'content' => "paraphrase this text: {$text}"
+                        'content' => "Summarize the following text in a concise and clear manner, highlighting the main points and removing any unnecessary details: {$text}"
                     ]
                 ],
             ]);

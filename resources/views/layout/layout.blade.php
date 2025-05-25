@@ -8,7 +8,7 @@
 <body class="h-full max-w-full w-full overflow-x-hidden font-nunito relative">
   {{-- popup start --}}
   <div
-    class="js-popup absolute inset-0 px-3 py-2 hidden items-center justify-center w-full min-h-screen bg-gray-300/40 z-[999]">
+    class="js-popup absolute inset-0 px-3 py-2 hidden items-center justify-center w-full min-h-screen bg-gray-300/70 z-[999]">
     <div class="popup-inner bg-white h-auto w-auto shadow rounded-md relative">
       <button type="button" class="flex justify-end w-full cursor-pointer group py-2 px-3">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

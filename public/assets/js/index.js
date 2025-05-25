@@ -13,7 +13,7 @@ const API_BASE_URL = `${BASE_URL}/paraphrase`;
 const MAX_WORDS = 500;
 const MIN_WORDS = 15;
 const sampleText =
-    "Put what you want changed in this section. Then, click the summarize button below. It's that easy!";
+    "Staying current with technology is essential for success. Businesses embracing innovation gain a competitive edge, while those resisting it risk falling behind. Technology reshapes communication, work, and life—making adaptation vital for both personal and professional development.";
 const valideFiles = ["txt", "pdf", "docx"];
 (() => {
     $(document).ready(() => {
@@ -87,20 +87,38 @@ const valideFiles = ["txt", "pdf", "docx"];
         }
 
         if (fileExt === "pdf") {
+            $(".js-file-loader").removeClass("hidden").addClass("flex");
+            $("#js-input-text").addClass("hidden");
+            $("#js-btn-group").removeClass("flex").addClass("hidden");
             try {
                 const result = await handleExtractTextFromPdf(file);
                 $("#js-input-text").val(result);
                 handleInputTextArea({ target: $("#js-input-text")[0] });
+                $(".js-file-loader").addClass("hidden").removeClass("flex");
+                $("#js-input-text").removeClass("hidden");
             } catch (error) {
                 console.error("Error extracting text from PDF:", error);
+            } finally {
+                $(".js-file-loader").addClass("hidden").removeClass("flex");
+                $("#js-input-text").removeClass("hidden");
             }
         }
 
         if (fileExt === "docx") {
-            handleExtractTextFromDocx(file).then((result) => {
-                $("#js-input-text").val(result);
-                handleInputTextArea({ target: $("#js-input-text")[0] });
-            });
+            $(".js-file-loader").removeClass("hidden").addClass("flex");
+            $("#js-input-text").addClass("hidden");
+            $("#js-btn-group").removeClass("flex").addClass("hidden");
+            handleExtractTextFromDocx(file)
+                .then((result) => {
+                    $("#js-input-text").val(result);
+                    handleInputTextArea({ target: $("#js-input-text")[0] });
+                    $(".js-file-loader").addClass("hidden").removeClass("flex");
+                    $("#js-input-text").removeClass("hidden");
+                })
+                .finally(() => {
+                    $(".js-file-loader").addClass("hidden").removeClass("flex");
+                    $("#js-input-text").removeClass("hidden");
+                });
         }
 
         e.target.value = "";
@@ -244,10 +262,33 @@ const valideFiles = ["txt", "pdf", "docx"];
                     );
                 $("#js-download-result-text").attr("data-download", resultText);
                 $("#js-copy-result-text").attr("data-copy", resultText);
+            } else {
+                if ($(window).width() < 1024) {
+                    $(".output-box").addClass("hidden").removeClass("block");
+                    $(".tool")[0].scrollIntoView({
+                        behavior: "smooth",
+                    });
+                }
+                $(".js-text-summarize")
+                    .text(btnText)
+                    .removeClass("pointer-events-none bg-[#131313]/50")
+                    .addClass(
+                        "cursor-pointer pointer-events-auto bg-[#131313]"
+                    );
+                $(".js-loader").removeClass("flex").addClass("hidden");
+                $(".js-result-show").addClass("hidden");
+                $(".js-output-bottom").addClass("hidden").removeClass("flex");
             }
         } catch (error) {
-            console.error("error occured while summarizing text: ", error);
+            const apiErrorMessage =
+                error?.response?.data?.message ||
+                "Error occured while summarizing text";
+            popup("Error", apiErrorMessage);
         } finally {
+            $(".js-text-summarize")
+                .text(btnText)
+                .removeClass("pointer-events-none bg-[#131313]/50")
+                .addClass("cursor-pointer pointer-events-auto bg-[#131313]");
             $(".js-loader").removeClass("flex").addClass("hidden");
         }
     };

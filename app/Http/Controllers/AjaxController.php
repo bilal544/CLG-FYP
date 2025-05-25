@@ -9,6 +9,8 @@ class AjaxController extends Controller
 {
     public function handleParaphrase(Request $request)
     {
+        $MIN_WORDS = 15;
+        $MAX_WORDS = 500;
         $API_BASE_URL = env('DEEPSEEK_API_URL');
         $API_KEY = env('DEEPSEEK_API_KEY');
 
@@ -17,6 +19,19 @@ class AjaxController extends Controller
         ]);
 
         $text = $validated['text'];
+
+        $wordsArray = str_word_count($text, 1);
+        $totalWords = count($wordsArray);
+
+        if ($totalWords < $MIN_WORDS) {
+            return response()->json([
+                'messsage' => 'Minimum 15 words are required',
+                'success' => false
+            ], 400);
+        }
+
+        $first500Words = array_slice($wordsArray, 0, $MAX_WORDS);
+        $summary = implode(' ', $first500Words);
 
         try {
             $apiResponse = Http::withHeaders([
@@ -27,14 +42,13 @@ class AjaxController extends Controller
                 'messages' => [
                     [
                         'role' => 'user',
-                        'content' => "paraphrase this text: {$text}"
+                        'content' => "Summarize the following text in a concise and clear manner, highlighting the main points and removing any unnecessary details: {$summary}"
                     ]
                 ],
             ]);
 
             if ($apiResponse->successful()) {
                 $data = $apiResponse->json();
-
                 $reply = $data['choices'][0]['message']['content'] ?? '';
 
                 return response()->json([

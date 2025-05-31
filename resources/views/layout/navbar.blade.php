@@ -14,12 +14,6 @@
         <li>
           <a href="#"
             class="text-base/6 text-black font-medium hover:text-black/80 transition-all ease-in duration-150">
-            Blog
-          </a>
-        </li>
-        <li>
-          <a href="#"
-            class="text-base/6 text-black font-medium hover:text-black/80 transition-all ease-in duration-150">
             Contact
           </a>
         </li>

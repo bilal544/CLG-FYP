@@ -6,6 +6,9 @@
 </head>
 
 <body class="h-full max-w-full w-full overflow-x-hidden font-nunito relative bg-gray-50">
+  @include('layout.navbar')
+  @yield('section')
+  @include('layout.footer')
   {{-- popup start --}}
   <div
     class="js-popup absolute inset-0 px-3 py-2 hidden items-center justify-center w-full min-h-screen bg-gray-300/70 z-[999]">
@@ -29,9 +32,6 @@
     </div>
   </div>
   {{-- popup end--}}
-  @include('layout.navbar')
-  @yield('section')
-  @include('layout.footer')
 </body>
 
 </html>

@@ -179,7 +179,7 @@ const handleExtractTextFromPdf = (file) => {
 
 // extract text from .docx file
 const handleExtractTextFromDocx = async (file) => {
-    await loadScript("jsDocx"); 
+    await loadScript("jsDocx");
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
@@ -196,7 +196,7 @@ const handleExtractTextFromDocx = async (file) => {
                         .slice(0, 500)
                         .join(" ");
 
-                    resolve(first500Words); 
+                    resolve(first500Words);
                 })
                 .catch((err) => {
                     console.error("Error reading DOCX:", err);
@@ -208,6 +208,27 @@ const handleExtractTextFromDocx = async (file) => {
     });
 };
 
+// get ip
+const getIp = async () => {
+    await loadScript("jsAxios");
+    try {
+        const response = await axios.get("https://api.ipify.org/?format=json", {
+            headers: {
+                "content-type": "application/json",
+            },
+        });
+
+        if (!response?.data) {
+            console.error("no ip found");
+            return;
+        }
+
+        return response?.data?.ip;
+    } catch (error) {
+        console.log("api error:", error);
+    }
+};
+
 export {
     handleWordCounter,
     loadScript,
@@ -217,4 +238,5 @@ export {
     handleFileExtension,
     handleExtractTextFromPdf,
     handleExtractTextFromDocx,
+    getIp,
 };

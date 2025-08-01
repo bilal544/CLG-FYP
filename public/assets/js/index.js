@@ -13,7 +13,7 @@ const API_BASE_URL = `${BASE_URL}/paraphrase`;
 const MAX_WORDS = 500;
 const MIN_WORDS = 15;
 const sampleText =
-    "Staying current with technology is essential for success. Businesses embracing innovation gain a competitive edge, while those resisting it risk falling behind. Technology reshapes communication, work, and life—making adaptation vital for both personal and professional development.";
+    "The rapid advancement of technology in the 21st century has reshaped almost every aspect of human life. From the way we communicate to how we work, shop, and learn, technology has become deeply embedded in our daily routines. Smartphones, AI-driven assistants, and smart homes are no longer science fiction but integral parts of modern society. Education has seen a massive transformation as well. Online learning platforms like Coursera, edX, and Khan Academy have made education accessible to anyone with an internet connection. This democratization of learning allows people from all backgrounds to gain new skills, earn certifications, and even complete degrees from prestigious universities.";
 const valideFiles = ["txt", "pdf", "docx"];
 (() => {
     $(document).ready(() => {
@@ -228,7 +228,7 @@ const valideFiles = ["txt", "pdf", "docx"];
         }
         $(".js-text-summarize")
             .text("Summarizing...")
-            .addClass("pointer-events-none bg-[#131313]/50")
+            .addClass("pointer-events-none bg-[#007aff]/50")
             .removeClass("cursor-pointer");
         $(".js-result-show").addClass("hidden");
         $(".js-loader").addClass("flex").removeClass("hidden");
@@ -251,14 +251,14 @@ const valideFiles = ["txt", "pdf", "docx"];
                 const resultText = response?.data?.text || "No result found.";
                 const outputWords = handleWordCounter(resultText.trim());
                 $(".js-output-bottom").removeClass("hidden").addClass("flex");
-                $("#js-result-text").val(resultText);
+                $("#js-result-text").html(resultText);
                 $(".js-output-words").text(`${outputWords} Words`);
                 $(".js-result-show").removeClass("hidden");
                 $(".js-text-summarize")
                     .text(btnText)
-                    .removeClass("pointer-events-none bg-[#131313]/50")
+                    .removeClass("pointer-events-none bg-[#007aff]/50")
                     .addClass(
-                        "cursor-pointer pointer-events-auto bg-[#131313]"
+                        "cursor-pointer pointer-events-auto bg-[#007aff]"
                     );
                 $("#js-download-result-text").attr("data-download", resultText);
                 $("#js-copy-result-text").attr("data-copy", resultText);
@@ -271,9 +271,9 @@ const valideFiles = ["txt", "pdf", "docx"];
                 }
                 $(".js-text-summarize")
                     .text(btnText)
-                    .removeClass("pointer-events-none bg-[#131313]/50")
+                    .removeClass("pointer-events-none bg-[#007aff]/50")
                     .addClass(
-                        "cursor-pointer pointer-events-auto bg-[#131313]"
+                        "cursor-pointer pointer-events-auto bg-[#007aff]"
                     );
                 $(".js-loader").removeClass("flex").addClass("hidden");
                 $(".js-result-show").addClass("hidden");
@@ -287,8 +287,8 @@ const valideFiles = ["txt", "pdf", "docx"];
         } finally {
             $(".js-text-summarize")
                 .text(btnText)
-                .removeClass("pointer-events-none bg-[#131313]/50")
-                .addClass("cursor-pointer pointer-events-auto bg-[#131313]");
+                .removeClass("pointer-events-none bg-[#007aff]/50")
+                .addClass("cursor-pointer pointer-events-auto bg-[#007aff]");
             $(".js-loader").removeClass("flex").addClass("hidden");
         }
     };
@@ -302,7 +302,7 @@ const valideFiles = ["txt", "pdf", "docx"];
             behavior: "smooth",
         });
         $(".js-output-bottom").addClass("hidden").removeClass("flex");
-        $("#js-result-text").val("");
+        $("#js-result-text").html("");
         handleDeleteText();
     };
 })();

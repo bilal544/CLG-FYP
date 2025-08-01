@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'deepseek'=>[
+     'API_BASE_URL'=> env('DEEPSEEK_API_URL'),
+     'AUTH_KEY'=> env('DEEPSEEK_API_KEY ')
+    ]
+
 ];

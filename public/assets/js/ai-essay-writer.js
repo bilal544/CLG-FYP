@@ -9,7 +9,7 @@ import {
 
 const sampleText = "Twinkle Twinkle Little Star";
 const $targetElem = $("#input-topic-name");
-const API_BASE_URL = "https://jsonplaceholder.typicode.com/posts";
+const API_BASE_URL = `/paraphrase/generate-essay`;
 let IP_ADDRESS;
 (() => {
     $(document).ready(() => {
@@ -63,11 +63,11 @@ let IP_ADDRESS;
         }
         $("#submit")
             .val("Generating...")
-            .addClass("pointer-events-none bg-[#131313]/85")
-            .removeClass("cursor-pointer bg-[#131313]");
+            .addClass("pointer-events-none bg-[#007aff]/90")
+            .removeClass("cursor-pointer bg-[#007aff]");
         await loadScript("jsAxios");
         const payload = {
-            essay_topic: text,
+            text: text,
             essay_length: $length,
             IP_ADDRESS,
         };
@@ -76,17 +76,18 @@ let IP_ADDRESS;
             const response = await axios.post(API_BASE_URL, payload, {
                 headers: {
                     "content-type": "application/json",
+                    "X-CSRF-TOKEN": $('meta[name="_token"]').attr("content"),
                 },
             });
 
             const data =
-                response?.data?.essay_topic ||
+                response?.data?.essay ||
                 "The pipe symbol is a vertical bar (|). It's also known as a vertical line, vertical slash, or upright slash, and is used in various contexts like mathematics, computing, and typography. In programming, it can represent a logical OR operator or be used to redirect output from one command to another";
             if (!data) {
                 $("#submit")
                     .val("Generate Essay")
-                    .removeClass("pointer-events-none bg-[#131313]/85")
-                    .addClass("cursor-pointer bg-[#131313]");
+                    .removeClass("pointer-events-none bg-[#007aff]/90")
+                    .addClass("cursor-pointer bg-[#007aff]");
                 popup("Error", "Something went wrong!");
                 return;
             }
@@ -94,8 +95,8 @@ let IP_ADDRESS;
             $(".js-output-body").html(data);
             $("#submit")
                 .val("Generate Essay")
-                .removeClass("pointer-events-none bg-[#131313]/85")
-                .addClass("cursor-pointer bg-[#131313]");
+                .removeClass("pointer-events-none bg-[#007aff]/90")
+                .addClass("cursor-pointer bg-[#007aff]");
             $("#js-copy-result-text").attr("data-copy", data);
             $("#js-download-result-text").attr("data-download", data);
             $(".js-output-words").text(`${totalWords} Words`);
@@ -108,8 +109,8 @@ let IP_ADDRESS;
         } finally {
             $("#submit")
                 .val("Generate Essay")
-                .removeClass("pointer-events-none bg-[#131313]/85")
-                .addClass("cursor-pointer bg-[#131313]");
+                .removeClass("pointer-events-none bg-[#007aff]/90")
+                .addClass("cursor-pointer bg-[#007aff]");
         }
     };
 })();

@@ -4,10 +4,18 @@ const scriptsLinks = {
     jsPdf: "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js",
     jsDocx: "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js",
     jsAxios: "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js",
+    html2pdfjs: "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
 };
 
 (() => {
     $(document).ready(() => {
+        // const statusMessage = $('#status-message').text();
+        // if(statusMessage){
+        //     setTimeout(()=>{
+        //         $('#status-message').empty();
+        //     }, 1500)
+        // }
+        
         $(document).on("click", ".js-remove-popup", () => {
             $(".js-popup").empty().removeClass("flex").addClass("hidden");
         });

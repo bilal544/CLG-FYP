@@ -5,7 +5,7 @@
   @include('layout.head')
 </head>
 
-<body class="h-full max-w-full w-full overflow-x-hidden font-nunito relative bg-gray-50">
+<body class="h-full max-w-full w-full overflow-x-hidden font-nunito relative bg-[#101010]">
   @include('layout.navbar')
   @yield('section')
   @include('layout.footer')
